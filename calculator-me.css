@@ -31,4 +31,22 @@ body {
   height: 80%; /*딱맞게 하고 gap으로 띄우기*/
   border-radius: 20px;
   background-color: #897777;
+  padding: 3px;
+}
+
+#button-container button {
+  width: 25%;
+  height: 20%;
+  font-size: 25px;
+  border-radius: 20%;
+  border: 3px solid #897777;
+  cursor: pointer;
+}
+
+#button-container button:hover {
+  background-color: rgb(234, 226, 217);
+}
+
+#button-container button:active {
+  background-color: rgb(170, 160, 151);
 }
