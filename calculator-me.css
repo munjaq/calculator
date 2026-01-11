@@ -26,7 +26,7 @@ body {
   background-color: #897777;
 }
 
-#buttons-container {
+#button-container {
   width: 95%;
   height: 80%; /*딱맞게 하고 gap으로 띄우기*/
   border-radius: 20px;

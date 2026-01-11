@@ -9,7 +9,7 @@
   <body>
     <div id="calculator-wrapper">
       <div id="result-container"></div>
-      <div id="buttons-container"></div>
+      <div id="button-container"></div>
     </div>
     <script>
       const buttons = [
@@ -34,6 +34,14 @@
         { text: ".", value: "decimal-point", type: "func" },
         { text: "=", value: "equal", type: "func-4" },
       ];
+
+      const buttonContainer = document.getElementById("button-container");
+
+      buttons.forEach((button) => {
+        const buttonElement = document.createElement("button"); //element라는 지칭이 맞나? node는 왜 아닌가?
+        buttonElement.textContent = button.text;
+        buttonContainer.append(buttonElement);
+      });
     </script>
   </body>
 </html>
