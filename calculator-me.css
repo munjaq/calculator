@@ -40,6 +40,8 @@ body {
   color: white;
   user-select: none;
   font-family: "Digital-7";
+  border: none;
+  outline: none; /*focus시  border 삭제*/
 }
 
 #button-container {
