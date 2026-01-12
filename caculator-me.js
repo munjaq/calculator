@@ -121,24 +121,45 @@ function makeButtons() {
 
     switch (button.type) {
       case "number":
-        buttonElement.addEventListener("click", () => appendNumber(button.text));
+        buttonElement.addEventListener("click", () => {
+          appendNumber(button.text);
+          render();
+        });
         break;
       case "operator":
-        buttonElement.addEventListener("click", () => setOperator(button.text));
+        buttonElement.addEventListener("click", () => {
+          setOperator(button.text);
+          render();
+        });
         break;
       case "backspace":
-        buttonElement.addEventListener("click", () => backspace());
+        buttonElement.addEventListener("click", () => {
+          backspace();
+          render();
+        });
         break;
       case "clear":
-        buttonElement.addEventListener("click", () => clearAll());
+        buttonElement.addEventListener("click", () => {
+          clearAll();
+          render();
+        });
         break;
       case "sign":
-        buttonElement.addEventListener("click", () => toggleSign());
+        buttonElement.addEventListener("click", () => {
+          toggleSign();
+          render();
+        });
       case "decimal":
-        buttonElement.addEventListener("click", () => appendDecimal());
+        buttonElement.addEventListener("click", () => {
+          appendDecimal();
+          render();
+        });
         break;
       case "calculate":
-        buttonElement.addEventListener("click", () => calculate(previousValue, currentValue, operator));
+        buttonElement.addEventListener("click", () => {
+          calculate(previousValue, currentValue, operator);
+          render();
+        });
     }
 
     buttonContainer.append(buttonElement);
@@ -146,11 +167,13 @@ function makeButtons() {
 }
 
 function render() {
-  resultContainer.textContent = currentValue;
-} // 각 버튼 누를 때마다 나오도록 하는 것
+  // 각 버튼 누를 때마다 나오도록 하는 것
+  resultContainer.value = currentValue;
+}
 
 function init() {
   makeButtons();
+  render();
 }
 
 init();
