@@ -1,41 +1,124 @@
+let currentValue = "0"; // 지금 입력중인 숫자 하나
+let previousValue = null; // 문자열, 이전에 확정된 숫자 하나
+let operator = null; // 문자열, 값에 붙이지 않음
+let shouldResetCurrent = false;
+
 const buttons = [
-  { text: "⌫", value: "delete", type: "operator" },
-  { text: "AC", value: "all-clear", type: "operator" },
-  { text: "%", value: "divide-rest", type: "operator" },
-  { text: "÷", value: "divide", type: "operator" },
-  { text: "7", value: 7, type: "num" },
-  { text: "8", value: 8, type: "num" },
-  { text: "9", value: 9, type: "num" },
-  { text: "x", value: "multiple", type: "operator" },
-  { text: "4", value: 4, type: "num" },
-  { text: "5", value: 5, type: "num" },
-  { text: "6", value: 6, type: "num" },
-  { text: "-", value: "minus", type: "operator" },
-  { text: "1", value: 1, type: "num" },
-  { text: "2", value: 2, type: "num" },
-  { text: "3", value: 3, type: "num" },
-  { text: "+", value: "plus", type: "operator" },
-  { text: "±", value: "switch-sign", type: "operator" },
-  { text: "0", value: 0, type: "num" },
-  { text: ".", value: "decimal-point", type: "operator" },
-  { text: "=", value: "equal", type: "operator" },
+  { text: "⌫", type: "backspace" },
+  { text: "AC", type: "clear" },
+  { text: "%", type: "operator" },
+  { text: "÷", type: "operator" },
+  { text: "7", type: "number" },
+  { text: "8", type: "number" },
+  { text: "9", type: "number" },
+  { text: "x", type: "operator" },
+  { text: "4", type: "number" },
+  { text: "5", type: "number" },
+  { text: "6", type: "number" },
+  { text: "-", type: "operator" },
+  { text: "1", type: "number" },
+  { text: "2", type: "number" },
+  { text: "3", type: "number" },
+  { text: "+", type: "operator" },
+  { text: "±", type: "sign" },
+  { text: "0", type: "number" },
+  { text: ".", type: "decimal" },
+  { text: "=", type: "calculate" },
 ];
 
 const buttonContainer = document.getElementById("button-container");
 const resultContainer = document.getElementById("result-container");
 
-function buttonClickEvent(button) {
-  //   resultContainer.value += button.text;
-  switch (button.value) {
-    case "delete":
-      resultContainer.textContent = resultContainer.textContent.slice(0, -1);
-      break;
-  }
+function appendNumber(num) {
+  currentValue += num;
+  console.log(currentValue);
 }
 
-buttons.forEach((button) => {
-  const buttonElement = document.createElement("button"); //element라는 지칭이 맞나? node는 왜 아닌가?
-  buttonElement.textContent = button.text;
-  buttonElement.addEventListener("click", () => buttonClickEvent(button));
-  buttonContainer.append(buttonElement);
-});
+function appendDecimal() {
+  currentValue += ".";
+  console.log(currentValue);
+}
+
+function setOperator(op) {
+  operator = op; // 연산자 세팅
+  shouldResetCurrent = true;
+  console.log(operator);
+}
+
+function backspace() {
+  currentValue = currentValue.slice(0, -1);
+  console.log(currentValue);
+}
+
+function clearAll() {
+  currentValue = "0";
+  previousValue = null;
+  operator = null;
+  shouldResetCurrent = false;
+  console.log(currentValue, previousValue, operator, shouldResetCurrent);
+}
+
+function toggleSign() {
+  const oppositeSignValue = Math.sign(currentValue);
+  currentValue = String(oppositeSignValue);
+  console.log(currentValue);
+}
+
+function percent(num) {
+  currentValue = num / 100;
+  console.log(currentValue);
+} //숫자+%: "현재값을 100으로 나눔" 규칙 (%단항 연산일 경우를 따로 분리)
+
+function calculate(a, b, op) {
+  switch (op) {
+    case "+":
+      return a + b;
+    case "-":
+      return a - b;
+    case "÷":
+      return a / b;
+    case "x":
+      return a * b;
+    case "%":
+      return a % b; // 연산만 담당 %:숫자&숫자:나머지
+  }
+  console.log(currentValue);
+}
+
+function makeButtons() {
+  buttons.forEach((button) => {
+    const buttonElement = document.createElement("button");
+
+    buttonElement.textContent = button.text;
+
+    switch (button.type) {
+      case "number":
+        buttonElement.addEventListener("click", () => appendNumber(button.text));
+        break;
+      case "operator":
+        buttonElement.addEventListener("click", () => setOperator(button.text));
+        break;
+      case "backspace":
+        buttonElement.addEventListener("click", () => backspace());
+        break;
+      case "clear":
+        buttonElement.addEventListener("click", () => clearAll());
+        break;
+      case "sign":
+        buttonElement.addEventListener("click", () => toggleSign());
+      case "decimal":
+        buttonElement.addEventListener("click", () => appendDecimal());
+        break;
+      case "equal":
+        buttonElement.addEventListener("click", () => calculate(previousValue, currentValue, operator));
+    }
+
+    buttonContainer.append(buttonElement);
+  });
+}
+
+function render() {
+  makeButtons();
+}
+
+render();
