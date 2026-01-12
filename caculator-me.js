@@ -167,7 +167,7 @@ function makeButtons() {
 
 function render() {
   // 각 버튼 누를 때마다 나오도록 하는 것
-  resultContainer.value = currentValue;
+  resultContainer.textContent = currentValue;
 }
 
 function init() {
