@@ -129,7 +129,6 @@ function makeButtons() {
       case "operator":
         buttonElement.addEventListener("click", () => {
           setOperator(button.text);
-          render();
         });
         break;
       case "backspace":
