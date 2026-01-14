@@ -34,21 +34,19 @@ function appendNumber(num) {
     previousValue = currentValue;
     currentValue = "";
     currentValue = num;
+    shouldResetCurrent = false;
   } else {
     currentValue += num;
   }
-  console.log(currentValue);
-  console.log(shouldResetCurrent);
+  console.log("prev:", previousValue, "current:", currentValue, "op:", operator);
 }
 
 function appendDecimal() {
   currentValue += ".";
-  console.log(currentValue);
 }
 
 function backspace() {
   currentValue = currentValue.slice(0, -1);
-  console.log(currentValue);
 }
 
 function clearAll() {
@@ -56,49 +54,40 @@ function clearAll() {
   previousValue = null;
   operator = null;
   shouldResetCurrent = false;
-  console.log(currentValue, previousValue, operator, shouldResetCurrent);
 }
 
 function toggleSign() {
   const oppositeSignValue = currentValue * -1;
   currentValue = String(oppositeSignValue);
-  console.log(currentValue);
 }
 
 function percent(num) {
   currentValue = num / 100;
-  console.log(currentValue);
-} //숫자+%: "현재값을 100으로 나눔" 규칙 (%단항 연산일 경우를 따로 분리)
+}
 
 function setOperator(op) {
   operator = op; // 연산자 세팅
   shouldResetCurrent = true;
-
-  console.log(operator);
 }
 
 function operate(a, b, op) {
-  console.log(a, b, op);
   switch (op) {
     case "+":
-      console.log(a + b);
       return a + b;
     case "-":
-      console.log(a - b);
       return a - b;
     case "÷":
-      console.log(a / b);
       return a / b;
     case "x":
-      console.log(a * b);
       return a * b;
     case "%":
-      console.log(a % b);
       return a % b; // 연산만 담당 %:숫자&숫자:나머지
   }
 }
 
 function calculate(a, b, op) {
+  if (currentValue === "" || previousValue === null || operator === null) return;
+
   const na = Number(a);
   const nb = Number(b);
 
@@ -106,9 +95,11 @@ function calculate(a, b, op) {
 
   previousValue = null;
   operator = null;
-  shouldResetCurrent = false;
+  shouldResetCurrent = true;
+}
 
-  console.log(currentValue);
+function clearResultContainer() {
+  resultContainer.textContent = "";
 }
 
 function makeButtons() {
@@ -126,7 +117,11 @@ function makeButtons() {
         break;
       case "operator":
         buttonElement.addEventListener("click", () => {
+          if (previousValue && currentValue) {
+            calculate(previousValue, currentValue, operator);
+          }
           setOperator(button.text);
+          render();
         });
         break;
       case "backspace":
@@ -138,6 +133,7 @@ function makeButtons() {
       case "clear":
         buttonElement.addEventListener("click", () => {
           clearAll();
+          clearResultContainer();
           render();
         });
         break;
