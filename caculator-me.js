@@ -59,7 +59,7 @@ function clearAll() {
 }
 
 function toggleSign() {
-  const oppositeSignValue = Math.sign(currentValue);
+  const oppositeSignValue = currentValue * -1;
   currentValue = String(oppositeSignValue);
   console.log(currentValue);
 }
@@ -148,6 +148,7 @@ function makeButtons() {
           toggleSign();
           render();
         });
+        break;
       case "decimal":
         buttonElement.addEventListener("click", () => {
           appendDecimal();
@@ -159,6 +160,7 @@ function makeButtons() {
           calculate(previousValue, currentValue, operator);
           render();
         });
+        break;
     }
 
     buttonContainer.append(buttonElement);
