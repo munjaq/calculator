@@ -31,7 +31,6 @@ const resultContainer = document.getElementById("result-container");
 
 function appendNumber(num) {
   if (shouldResetCurrent) {
-    previousValue = currentValue;
     currentValue = "";
     currentValue = num;
     shouldResetCurrent = false;
@@ -67,6 +66,7 @@ function percent(num) {
 
 function setOperator(op) {
   operator = op; // 연산자 세팅
+  previousValue = currentValue; // 이전 숫자 상태는 여기서
   shouldResetCurrent = true;
 }
 
