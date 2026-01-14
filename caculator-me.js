@@ -41,6 +41,7 @@ function appendNumber(num) {
 }
 
 function appendDecimal() {
+  if (currentValue.includes(".")) return;
   currentValue += ".";
 }
 
