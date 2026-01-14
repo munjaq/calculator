@@ -98,10 +98,6 @@ function calculate(a, b, op) {
   shouldResetCurrent = true;
 }
 
-function clearResultContainer() {
-  resultContainer.textContent = "";
-}
-
 function makeButtons() {
   buttons.forEach((button) => {
     const buttonElement = document.createElement("button");
@@ -133,7 +129,6 @@ function makeButtons() {
       case "clear":
         buttonElement.addEventListener("click", () => {
           clearAll();
-          clearResultContainer();
           render();
         });
         break;
