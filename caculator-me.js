@@ -30,14 +30,15 @@ const buttonContainer = document.getElementById("button-container");
 const resultContainer = document.getElementById("result-container");
 
 function appendNumber(num) {
-  if (!shouldResetCurrent) {
-    currentValue += num;
+  if (shouldResetCurrent) {
+    previousValue = currentValue;
+    currentValue = "";
+    currentValue = num;
   } else {
-    previousValue += currentValue;
     currentValue += num;
   }
-
   console.log(currentValue);
+  console.log(shouldResetCurrent);
 }
 
 function appendDecimal() {
@@ -72,9 +73,6 @@ function percent(num) {
 function setOperator(op) {
   operator = op; // 연산자 세팅
   shouldResetCurrent = true;
-
-  previousValue = currentValue;
-  currentValue = "";
 
   console.log(operator);
 }
