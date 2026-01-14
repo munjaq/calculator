@@ -42,6 +42,10 @@ function appendNumber(num) {
 
 function appendDecimal() {
   if (currentValue.includes(".")) return;
+  if (currentValue === "") {
+    currentValue += "0.";
+    return;
+  }
   currentValue += ".";
 }
 
@@ -57,17 +61,21 @@ function clearAll() {
 }
 
 function toggleSign() {
-  const oppositeSignValue = currentValue * -1;
+  const n = Number(currentValue);
+
+  const oppositeSignValue = n * -1;
   currentValue = String(oppositeSignValue);
 }
 
-function percent(num) {
-  currentValue = num / 100;
-}
+// function percent(num) {
+//   currentValue = num / 100;
+// }
 
 function setOperator(op) {
+  if (currentValue === "") return;
+
   operator = op; // 연산자 세팅
-  previousValue = currentValue; // 이전 숫자 상태는 여기서
+  previousValue = currentValue;
   shouldResetCurrent = true;
 }
 
