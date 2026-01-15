@@ -58,6 +58,7 @@ function clearAll() {
   currentValue = "";
   previousValue = null;
   operator = null;
+  lastOperand = null;
   phase = "entering"; // 초기 상태
 }
 
@@ -84,16 +85,17 @@ function operate(a, b, op) {
 }
 
 function calculate(a, b, op) {
-  if (currentValue === "" || previousValue === null || operator === null) return;
+  if (previousValue === null || operator === null) return;
 
-  const na = Number(a);
-  const nb = Number(b);
+  const a = Number(previousValue);
+  const b = phase === "entering" ? Number(currentValue) : Number(lastOperand ?? previousValue); // B 없으면 반복
 
-  currentValue = String(operate(na, nb, op));
+  const result = operate(a, b, operator);
 
-  previousValue = null;
-  operator = null;
-  phase = "result";
+  currentValue = String(result);
+  previousValue = currentValue; // 결과를 A로 유지
+  lastOperand = String(b); // 반복용 B 유지
+  phase = "result"; // 결과 표시 상태
 }
 
 function makeButtons() {
