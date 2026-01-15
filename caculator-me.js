@@ -122,9 +122,6 @@ function makeButtons() {
         break;
       case "operator":
         buttonElement.addEventListener("click", () => {
-          if (previousValue && currentValue) {
-            calculate(previousValue, currentValue, operator);
-          }
           setOperator(button.text);
           render();
         });
