@@ -42,6 +42,9 @@ body {
   font-family: "Digital-7";
   border: none;
   outline: none; /*focus시  border 삭제*/
+  white-space: nowrap;
+  line-height: 1.1;
+  text-align: right;
 }
 
 #button-container {

@@ -193,6 +193,21 @@ function makeButtons() {
 function render() {
   // 각 버튼 누를 때마다 나오도록 하는 것
   resultContainer.textContent = currentValue;
+
+  const len = currentValue.length;
+
+  if (len <= 8) {
+    resultContainer.style.fontSize = "80px";
+  } else if (len <= 12) {
+    resultContainer.style.fontSize = "64px";
+  } else if (len <= 16) {
+    resultContainer.style.fontSize = "48px";
+  } else {
+    resultContainer.style.fontSize = "36px";
+  }
+
+  resultContainer.style.whiteSpace = "normal";
+  resultContainer.style.wordBreak = "break-all";
 }
 
 function init() {
