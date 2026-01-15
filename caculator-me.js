@@ -84,7 +84,8 @@ function operate(a, b, op) {
   }
 }
 
-function calculate(a, b, op) {
+function calculate() {
+  if (phase === "result") return;
   if (previousValue === null || operator === null) return;
 
   const a = Number(previousValue);
@@ -179,7 +180,7 @@ function makeButtons() {
         break;
       case "calculate":
         buttonElement.addEventListener("click", () => {
-          calculate(previousValue, currentValue, operator);
+          calculate();
           render();
         });
         break;
