@@ -1,7 +1,8 @@
 let currentValue = ""; // 지금 입력중인 숫자 하나
 let previousValue = null; // 문자열, 이전에 확정된 숫자 하나
 let operator = null; // 문자열, 값에 붙이지 않음
-let shouldResetCurrent = false;
+let lastOperand = null; // 마지막 계산에 쓰인 숫자
+let phase = "entering"; // entering, opPending, result
 
 const buttons = [
   { text: "⌫", type: "backspace" },
@@ -30,10 +31,10 @@ const buttonContainer = document.getElementById("button-container");
 const resultContainer = document.getElementById("result-container");
 
 function appendNumber(num) {
-  if (shouldResetCurrent) {
-    currentValue = "";
+  if (phase === "opPending" || phase === "result") {
     currentValue = num;
-    shouldResetCurrent = false;
+    phase = "entering";
+    return;
   } else {
     currentValue += num;
   }
@@ -57,7 +58,7 @@ function clearAll() {
   currentValue = "";
   previousValue = null;
   operator = null;
-  shouldResetCurrent = false;
+  phase = "entering"; // 초기 상태
 }
 
 function toggleSign() {
@@ -65,18 +66,6 @@ function toggleSign() {
 
   const oppositeSignValue = n * -1;
   currentValue = String(oppositeSignValue);
-}
-
-// function percent(num) {
-//   currentValue = num / 100;
-// }
-
-function setOperator(op) {
-  if (currentValue === "") return;
-
-  operator = op; // 연산자 세팅
-  previousValue = currentValue;
-  shouldResetCurrent = true;
 }
 
 function operate(a, b, op) {
@@ -104,7 +93,7 @@ function calculate(a, b, op) {
 
   previousValue = null;
   operator = null;
-  shouldResetCurrent = true;
+  phase = "result";
 }
 
 function makeButtons() {
@@ -122,7 +111,43 @@ function makeButtons() {
         break;
       case "operator":
         buttonElement.addEventListener("click", () => {
-          setOperator(button.text);
+          if (currentValue === "") return;
+
+          // opPending: B가 없으니 lastOperand(없으면 A)로 반복 계산
+          if (phase === "opPending" && previousValue !== null && operator !== null) {
+            const a = Number(previousValue);
+            const b = Number(lastOperand ?? previousValue);
+            const result = operate(a, b, operator);
+
+            currentValue = String(result);
+            previousValue = currentValue;
+            lastOperand = String(b);
+            operator = button.text;
+            phase = "opPending";
+            render();
+            return;
+          }
+
+          // entering 상태에서 A op B가 완성된 경우: 누적 계산
+          if (previousValue != null && operator !== null && phase === "entering") {
+            const a = Number(previousValue);
+            const b = Number(currentValue);
+            const result = operate(a, b, operator);
+
+            currentValue = String(result);
+            previousValue = currentValue;
+            lastOperand = String(b);
+            operator = button.text;
+            phase = "opPending";
+            render();
+            return;
+          }
+
+          //첫 연산자 세팅
+          previousValue = currentValue;
+          operator = button.text;
+          lastOperand = null;
+          phase = "opPending";
           render();
         });
         break;
