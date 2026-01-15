@@ -38,7 +38,6 @@ function appendNumber(num) {
   } else {
     currentValue += num;
   }
-  console.log("prev:", previousValue, "current:", currentValue, "op:", operator);
 }
 
 function appendDecimal() {
@@ -188,6 +187,18 @@ function makeButtons() {
 
     buttonContainer.append(buttonElement);
   });
+}
+
+function wouldOverflow(nextText) {
+  const prevText = resultContainer.textContent;
+
+  resultContainer.textContent = nextText;
+
+  const overflow = resultContainer.scrollHeight > resultContainer.clientHeight;
+
+  resultContainer.textContent = prevText;
+
+  return overflow;
 }
 
 function render() {
